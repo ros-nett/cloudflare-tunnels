@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflared
+  namespace: cloudflare
+  labels:
+    app: cloudflared
+spec:
+  replicas: 3
+  template:
+    metadata:
+      name: cloudflared
+      labels:
+        app: cloudflared
+    spec:
+      containers:
+        - name: cloudflared
+          image: cloudflare/cloudflared:2022.10.3
+          imagePullPolicy: IfNotPresent
+          args:
+            - tunnel
+            - run
+          env:
+            - name: TUNNEL_URL
+              value: http://traefik.traefik.svc.cluster.local
+            - name: TUNNEL_METRICS
+              value: 0.0.0.0:2000
+            - name: TUNNEL_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: tunnel_token
+                  name: tunnel_token
+                  optional: false
+          livenessProbe:
+            httpGet:
+              path: /ready
+              port: 2000
+            failureThreshold: 1
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: cloudflared
