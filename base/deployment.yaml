@@ -28,7 +28,7 @@ spec:
             - name: TUNNEL_TOKEN
               valueFrom:
                 secretKeyRef:
-                  key: tunnel_token
+                  key: tunnel-token
                   name: tunnel-token
                   optional: false
           livenessProbe:
