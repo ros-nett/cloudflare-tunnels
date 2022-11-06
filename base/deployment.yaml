@@ -29,7 +29,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: tunnel_token
-                  name: tunnel_token
+                  name: tunnel-token
                   optional: false
           livenessProbe:
             httpGet:

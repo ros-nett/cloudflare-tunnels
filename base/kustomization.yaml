@@ -4,4 +4,4 @@ namespace: cloudflare
 
 resources:
   - deployment.yaml
-  - tunnel_token.yaml
+  - tunnel-token.yaml
